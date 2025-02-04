@@ -4,17 +4,26 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomUserLoginForm
 from django.contrib.auth.decorators import login_required
 from .message import message  # Asegúrate de que la clase Message esté correctamente importada
+from django.contrib import messages
+from .forms import CustomUserCreationForm  # Asegúrate de que tienes este formulario
 
 def register_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)  # Iniciar sesión después del registro
-            return redirect('home')  # Redirigir a la página principal
+            form.save()
+            messages.success(request, "Registro exitoso. Ahora puedes iniciar sesión.")
+            return redirect("login")  # Cambia "login" por la URL de inicio de sesión
+        else:
+            # Capturar errores y enviarlos al frontend
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
     else:
         form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    
+    return render(request, "register.html", {"form": form})
+
 
 def login_view(request):
     if request.method == 'POST':
