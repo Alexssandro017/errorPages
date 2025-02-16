@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'users',
+    'productos'
 ]
 
 MIDDLEWARE = [
@@ -94,13 +95,15 @@ WSGI_APPLICATION = 'errorPages.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+import pymysql
+pymysql.install_as_MySQLdb()
 #Configurar settings.py para conectar a MySQL:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Motor de base de datos
         'NAME': 'mi_base_de_datos',           # Nombre de la base de datos
         'USER': 'root',                 # Usuario de la base de datos
-        'PASSWORD': 'alex',           # Contraseña del usuariod
+        'PASSWORD': 'root',           # Contraseña del usuariod
         'HOST': 'localhost',                  # Dirección del servidor de BD
         'PORT': '3306',                       # Puerto de MySQL (por defecto 3306)
     }
@@ -162,3 +165,6 @@ AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/home' # Dónde irán los usuarios tras iniciar sesión
 LOGOUT_REDIRECT_URL = '/users/login/'
+
+import dotenv
+dotenv.load_dotenv()
